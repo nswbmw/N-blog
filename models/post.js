@@ -188,3 +188,27 @@ Post.getTag = function(tag, callback) {//返回含有特定标签的所有文章
     });
   });
 };
+
+Post.search = function(keyword, callback) {//返回通过标题关键字查询的所有文章
+  mongodb.open(function (err, db) {
+    if (err) {
+      return callback(err);
+    }
+    db.collection('posts', function(err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      var pattern = new RegExp("^.*"+keyword+".*$", "i");
+      collection.find({"title":pattern},{"name":1,"time":1,"title":1}).sort({
+        time:-1
+      }).toArray(function(err, docs){
+        mongodb.close();
+        if (err) {
+          callback(err, null);
+        }
+        callback(null, docs);
+      });
+    });
+  });
+};

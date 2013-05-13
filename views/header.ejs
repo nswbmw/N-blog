@@ -24,6 +24,7 @@ article a:hover{color:#333333;text-decoration:underline;}
 .archive time{float:left;font-size:14px;color:#999999;margin-right:1.2em;}
 .tag{background-color:#ff0000;border-radius:3px;font-size:14px;color:#ffffff;display:inline-block;padding:0 5px;margin-bottom:8px;}
 .tag:hover{text-decoration:none;background-color:#ffffff;color:#000000;-webkit-transition:color .2s linear;}
+.search{border:0;width:6em;text-align:center;font-size:1em;margin:0.5em 0;}
 </style>
 </head>
 <body>
@@ -43,6 +44,7 @@ article a:hover{color:#333333;text-decoration:underline;}
   <span><a title="登录" href="/login">login</a></span>
   <span><a title="注册" href="/reg">register</a></span>
 <% } %>
+<span><form action="/search" method="GET"><input type="text" name="keyword" placeholder="SEARCH" class="search" /></form></span>
 </nav>
 
 <article>
