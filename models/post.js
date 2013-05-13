@@ -24,7 +24,8 @@ Post.prototype.save = function(callback) {//存储一篇文章及其相关信息
       name: this.name,
       time: time,
       title:this.title,
-      post: this.post
+      post: this.post,
+      comments: []
   };
   //打开数据库
   mongodb.open(function (err, db) {
@@ -101,7 +102,12 @@ Post.getOne = function(name, day, title, callback) {//获取一篇文章
           callback(err, null);
         }
         //解析 markdown 为 html
-        doc.post = markdown.toHTML(doc.post);
+        if(doc){
+          doc.post = markdown.toHTML(doc.post);
+          doc.comments.forEach(function(comment){
+            comment.content = markdown.toHTML(comment.content);
+          });
+        }
         callback(null, doc);//返回特定查询的文章
       });
     });
