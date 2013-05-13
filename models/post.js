@@ -48,7 +48,7 @@ Post.prototype.save = function(callback) {//存储一篇文章及其相关信息
   });
 };
 
-Post.get = function(name, callback) {//读取文章及其相关信息
+Post.getAll = function(name, callback) {//读取文章及其相关信息
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
@@ -77,6 +77,32 @@ Post.get = function(name, callback) {//读取文章及其相关信息
           doc.post = markdown.toHTML(doc.post);
         });
         callback(null, docs);//成功！以数组形式返回查询的结果
+      });
+    });
+  });
+};
+
+Post.getOne = function(name, day, title, callback) {//获取一篇文章
+  //打开数据库
+  mongodb.open(function (err, db) {
+    if (err) {
+      return callback(err);
+    }
+    //读取 posts 集合
+    db.collection('posts', function(err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      //根据用户名、发表日期及文章名进行精确查询
+      collection.findOne({"name":name,"time.day":day,"title":title},function (err, doc) {
+        mongodb.close();
+        if (err) {
+          callback(err, null);
+        }
+        //解析 markdown 为 html
+        doc.post = markdown.toHTML(doc.post);
+        callback(null, doc);//返回特定查询的文章
       });
     });
   });
