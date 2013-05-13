@@ -19,6 +19,9 @@ article a:hover{color:#333333;text-decoration:underline;}
 .lastpage a{float:left;text-decoration:none;padding:.5em 1em;color:#ff0000;font-weight:bold;}
 .nextpage a{float:right;text-decoration:none;padding:.5em 1em;color:#ff0000;font-weight:bold;}
 .lastpage a:hover,.nextpage a:hover{text-decoration:none;background-color:#ff0000;color:#f9f9f9;-webkit-transition:color .2s linear;}
+.archive{list-style:none;line-height:28px;}
+.archive h3{margin:0.5em 0;}
+.archive time{float:left;font-size:14px;color:#999999;margin-right:1.2em;}
 </style>
 </head>
 <body>
@@ -29,6 +32,7 @@ article a:hover{color:#333333;text-decoration:underline;}
 
 <nav>
 <span><a title="主页" href="/">home</a></span>
+<span><a title="存档" href="/archive">archive</a></span>
 <% if(locals.user){ %>
   <span><a title="发表" href="/post">post</a></span>
   <span><a title="登出" href="/logout">logout</a></span>
