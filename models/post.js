@@ -27,7 +27,8 @@ Post.prototype.save = function(callback) {//存储一篇文章及其相关信息
       title:this.title,
       tags: this.tags,
       post: this.post,
-      comments: []
+      comments: [],
+      pv: 0
   };
   //打开数据库
   mongodb.open(function (err, db) {
@@ -112,6 +113,8 @@ Post.getOne = function(name, day, title, callback) {//获取一篇文章
         }
         callback(null, doc);//返回特定查询的文章
       });
+      //每访问1次，pv 值增加1
+      collection.update({"name":name,"time.day":day,"title":title},{$inc:{"pv":1}});
     });
   });
 };
