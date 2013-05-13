@@ -120,8 +120,11 @@ module.exports = function(app){
   app.post('/post', checkLogin);
   app.post('/post', function(req, res){
     var currentUser = req.session.user,
-        tags = [{"tag":req.body.tag1},{"tag":req.body.tag2},{"tag":req.body.tag3}],
-        post = new Post(currentUser.name, req.body.title, tags, req.body.post);
+        tags = [{"tag":req.body.tag1},{"tag":req.body.tag2},{"tag":req.body.tag3}];
+    var md5 = crypto.createHash('md5'),
+        email_MD5 = md5.update(currentUser.email.toLowerCase()).digest('hex'),
+        head = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
+    post = new Post(currentUser.name, head, req.body.title, tags, req.body.post);
     post.save(function(err){
       if(err){
         req.flash('error', err); 
@@ -256,15 +259,18 @@ module.exports = function(app){
   });
   app.post('/u/:name/:day/:title', function(req,res){
     var date = new Date(),
-        time = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes(),
-        comment = {"name":req.body.name, "email":req.body.email, "website":req.body.website, "time":time, "content":req.body.content};
+        time = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+    var md5 = crypto.createHash('md5'),
+        email_MD5 = md5.update(req.body.email.toLowerCase()).digest('hex'),
+        head = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48"; 
+    var comment = {"name":req.body.name, "head":head, "email":req.body.email, "website":req.body.website, "time":time, "content":req.body.content};
     var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
     newComment.save(function(err){
       if(err){
         req.flash('error',err); 
         return res.redirect('/');
       }
-      req.flash('success', '留言成功!');
+      req.flash('success', '评论成功!');
       res.redirect('back');
     });
   });
