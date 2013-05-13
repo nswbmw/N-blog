@@ -1,9 +1,10 @@
 var mongodb = require('./db'),
     markdown = require('markdown').markdown;
 
-function Post(name, title, post) {
+function Post(name, title, tags, post) {
   this.name = name;
-  this.title= title;
+  this.title = title;
+  this.tags = tags;
   this.post = post;
 }
 
@@ -24,6 +25,7 @@ Post.prototype.save = function(callback) {//存储一篇文章及其相关信息
       name: this.name,
       time: time,
       title:this.title,
+      tags: this.tags,
       post: this.post,
       comments: []
   };
@@ -126,6 +128,52 @@ Post.getArchive = function(callback) {//返回所有文章
       }
       //返回只包含 name、time、title 的文档组成的数组
       collection.find({},{"name":1,"time":1,"title":1}).sort({
+        time:-1
+      }).toArray(function(err, docs){
+        mongodb.close();
+        if (err) {
+          callback(err, null);
+        }
+        callback(null, docs);
+      });
+    });
+  });
+};
+
+Post.getTags = function(callback) {//返回所有标签
+  mongodb.open(function (err, db) {
+    if (err) {
+      return callback(err);
+    }
+    db.collection('posts', function(err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      //distinct 用来找出给定键的所有不同值
+      collection.distinct("tags.tag",function(err, docs){
+        mongodb.close();
+        if (err) {
+          callback(err, null);
+        }
+        callback(null, docs);
+      });
+    });
+  });
+};
+
+Post.getTag = function(tag, callback) {//返回含有特定标签的所有文章
+  mongodb.open(function (err, db) {
+    if (err) {
+      return callback(err);
+    }
+    db.collection('posts', function(err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      //通过 tags.tag 查询并返回只含有 name、time、title 键的文档组成的数组
+      collection.find({"tags.tag":tag},{"name":1,"time":1,"title":1}).sort({
         time:-1
       }).toArray(function(err, docs){
         mongodb.close();
