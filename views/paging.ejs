@@ -1,0 +1,10 @@
+<br />
+<div>
+  <% if(page-1){ %>
+    <span class="lastpage"><a title="上一页" href="?p=<%= page-1 %>">上一页</a></span>
+  <% } %>
+
+  <% if(postsLen==10){ %>
+    <span class="nextpage"><a title="下一页" href="?p=<%= page+1 %>">下一页</a></span>
+  <% } %>
+</div>

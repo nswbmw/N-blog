@@ -49,7 +49,7 @@ Post.prototype.save = function(callback) {//存储一篇文章及其相关信息
   });
 };
 
-Post.getAll = function(name, callback) {//读取文章及其相关信息
+Post.getTen = function(name, page, callback) {//一次获取十篇文章
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
@@ -65,8 +65,8 @@ Post.getAll = function(name, callback) {//读取文章及其相关信息
       if (name) {
         query.name = name;
       }
-      //根据 query 对象查询文章
-      collection.find(query).sort({
+      //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的10个结果
+      collection.find(query,{skip:(page-1)*10,limit:10}).sort({
         time: -1
       }).toArray(function (err, docs) {
         mongodb.close();
