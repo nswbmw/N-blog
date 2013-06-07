@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -31,8 +30,9 @@ app.use(express.session({
     db: settings.db
   })
 }));
-app.use(app.router);
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
