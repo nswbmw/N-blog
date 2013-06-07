@@ -5,11 +5,11 @@ N-blog
 
 教程见 [wiki](https://github.com/nswbmw/N-blog/wiki/_pages)
 
-### bug修复：###
+### bug修复日志：###
 
-#### bug-fix-1: ####
+#### （2013年5月24日）bug-fix-1: ####
 
-1. 打开 header.ejs ，将 `<style type="text/css">...</style>` 修改为：`<link rel="stylesheet" href="/stylesheets/style.css">`
+1.打开 header.ejs ，将 `<style type="text/css">...</style>` 修改为：`<link rel="stylesheet" href="/stylesheets/style.css">`
 
 2.把原先 `<style type="text/css">...</style>` 中的样式全部放到 `public/stylesheets/style.css` 中
 
