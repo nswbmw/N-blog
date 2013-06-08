@@ -10,9 +10,9 @@ article{font-size:16px;padding-top:.5em;}
 article a{color:#dd0000;text-decoration:none;}
 article a:hover{color:#333333;text-decoration:underline;}
 .info{font-size:14px;}
-.lastpage a{float:left;text-decoration:none;padding:.5em 1em;color:#ff0000;font-weight:bold;}
+.prepage a{float:left;text-decoration:none;padding:.5em 1em;color:#ff0000;font-weight:bold;}
 .nextpage a{float:right;text-decoration:none;padding:.5em 1em;color:#ff0000;font-weight:bold;}
-.lastpage a:hover,.nextpage a:hover{text-decoration:none;background-color:#ff0000;color:#f9f9f9;-webkit-transition:color .2s linear;}
+.prepage a:hover,.nextpage a:hover{text-decoration:none;background-color:#ff0000;color:#f9f9f9;-webkit-transition:color .2s linear;}
 .archive{list-style:none;line-height:28px;}
 .archive h3{margin:0.5em 0;}
 .archive time{float:left;font-size:14px;color:#999999;margin-right:1.2em;}

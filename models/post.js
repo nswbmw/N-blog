@@ -70,19 +70,22 @@ Post.getTen = function(name, page, callback) {//一次获取十篇文章
       if (name) {
         query.name = name;
       }
-      //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的10个结果
-      collection.find(query,{skip:(page-1)*10,limit:10}).sort({
-        time: -1
-      }).toArray(function (err, docs) {
-        mongodb.close();
-        if (err) {
-          callback(err, null);//失败！返回 null
-        }
-        //解析 markdown 为 html
-        docs.forEach(function(doc){
-          doc.post = markdown.toHTML(doc.post);
+      //使用 count 返回总文档数 total
+      collection.count(function(err, total){
+        //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的10个结果
+        collection.find(query,{skip:(page-1)*10,limit:10}).sort({
+          time: -1
+        }).toArray(function (err, docs) {
+          mongodb.close();
+          if (err) {
+            callback(err, null);//失败！返回 null
+          }
+          //解析 markdown 为 html
+          docs.forEach(function(doc){
+            doc.post = markdown.toHTML(doc.post);
+          });  
+          callback(null, docs, total);
         });
-        callback(null, docs);//成功！以数组形式返回查询的结果
       });
     });
   });
