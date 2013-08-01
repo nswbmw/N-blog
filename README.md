@@ -133,16 +133,3 @@ N-blog
     </div>
 
 5.打开 style.css ，将 `.lastpage` 修改为 `.prepage`。
-
-#### bug-fix-3（2013年7月18日） ####
-
-修复启动程序时出现 `Please ensure that you set the default write concern for the database by setting` 的提示
-
-打开 models/db.js ，将
-
-    module.exports = new Db(settings.db, new Server(settings.host, Connection.DEFAULT_PORT, {}));
-    
-修改为
-
-    module.exports = new Db(settings.db, new Server(settings.host, Connection.DEFAULT_PORT, {}), {safe: true});
-    
