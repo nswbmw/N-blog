@@ -8,10 +8,10 @@
 <% }) %>
 
 <form method="post">
-<% if(locals.user){ %>
-  姓名：<input type="text" name="name" value="<%= locals.user.name %>" /><br />
-  邮箱：<input type="text" name="email" value="<%= locals.user.email %>" /><br />
-  网址：<input type="text" name="website" value="/u/<%= locals.user.name %>" /><br />
+<% if(user){ %>
+  姓名：<input type="text" name="name" value="<%= user.name %>" /><br />
+  邮箱：<input type="text" name="email" value="<%= user.email %>" /><br />
+  网址：<input type="text" name="website" value="/u/<%= user.name %>" /><br />
 <% } else { %>
   姓名：<input type="text" name="name" /><br />
   邮箱：<input type="text" name="email" /><br />
