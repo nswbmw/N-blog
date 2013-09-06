@@ -1,0 +1,21 @@
+<%- include header %>
+<p>
+  <% if (user.name == post.name) { %>
+    <span><a class="edit" href="/edit/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">编辑</a></span>
+    <span><a class="edit" href="/remove/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">删除</a></span>
+  <% } %>
+</p>
+<p class="info">
+  作者：<a href="/u/<%= post.name %>"><%= post.name %></a> | 
+  日期：<%= post.time.minute %> | 
+  标签：
+  <% post.tags.forEach(function (tag, index) { %>
+    <% if (tag.tag) { %>
+      <a class="tag" href="/tags/<%= tag.tag %>"><%= tag.tag %></a>
+    <% } %>
+  <% }) %>
+</p>
+<p><%- post.post %></p>
+<p class="info">阅读：<%= post.pv %> | 评论：<%= post.comments.length %></p>
+<%- include comment %>
+<%- include footer %>
