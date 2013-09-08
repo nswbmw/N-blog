@@ -44,7 +44,7 @@ module.exports = function(app) {
     //检验用户两次输入的密码是否一致
     if (password_re != password) {
       req.flash('error', '两次输入的密码不一致!'); 
-      res.redirect('/reg');
+      return res.redirect('/reg');
     }
     //生成密码的 md5 值
     var md5 = crypto.createHash('md5'),
