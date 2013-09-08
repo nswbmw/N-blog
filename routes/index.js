@@ -44,7 +44,7 @@ module.exports = function(app) {
     //检验用户两次输入的密码是否一致
     if (password_re != password) {
       req.flash('error', '两次输入的密码不一致!'); 
-      res.redirect('/reg');
+      return res.redirect('/reg');
     }
     //生成密码的 md5 值
     var md5 = crypto.createHash('md5'),
@@ -58,13 +58,13 @@ module.exports = function(app) {
     User.get(newUser.name, function (err, user) {
       if (user) {
         req.flash('error', '用户已存在!');
-        res.redirect('/reg');//用户名存在则返回注册页
+        return res.redirect('/reg');//用户名存在则返回注册页
       }
       //如果不存在则新增用户
       newUser.save(function (err) {
         if (err) {
           req.flash('error', err);
-          res.redirect('/reg');
+          return res.redirect('/reg');
         }
         req.session.user = newUser;//用户信息存入 session
         req.flash('success', '注册成功!');
@@ -92,12 +92,12 @@ module.exports = function(app) {
     User.get(req.body.name, function (err, user) {
       if (!user) {
         req.flash('error', '用户不存在!'); 
-        res.redirect('/login');//用户不存在则跳转到登录页
+        return res.redirect('/login');//用户不存在则跳转到登录页
       }
       //检查密码是否一致
       if (user.password != password) {
         req.flash('error', '密码错误!'); 
-        res.redirect('/login');//密码错误则跳转到登录页
+        return res.redirect('/login');//密码错误则跳转到登录页
       }
       //用户名密码都匹配后，将用户信息存入 session
       req.session.user = user;
@@ -127,7 +127,7 @@ module.exports = function(app) {
     post.save(function (err) {
       if (err) {
         req.flash('error', err); 
-        res.redirect('/');
+        return res.redirect('/');
       }
       req.flash('success', '发布成功!');
       res.redirect('/');
@@ -169,11 +169,11 @@ module.exports = function(app) {
     res.redirect('/upload');
   });
 
-  app.get('/archive', function (req,res) {
+  app.get('/archive', function (req, res) {
     Post.getArchive(function (err, posts) {
       if (err) {
-        req.flash('error',err); 
-        res.redirect('/');
+        req.flash('error', err); 
+        return res.redirect('/');
       }
       res.render('archive', {
         title: '存档',
@@ -189,7 +189,7 @@ module.exports = function(app) {
     Post.getTags(function (err, posts) {
       if (err) {
         req.flash('error', err); 
-        res.redirect('/');
+        return res.redirect('/');
       }
       res.render('tags', {
         title: '标签',
@@ -205,7 +205,7 @@ module.exports = function(app) {
     Post.getTag(req.params.tag, function (err, posts) {
       if (err) {
         req.flash('error',err); 
-        res.redirect('/');
+        return res.redirect('/');
       }
       res.render('tag', {
         title: 'TAG:' + req.params.tag,
@@ -230,7 +230,7 @@ module.exports = function(app) {
     Post.search(req.query.keyword, function (err, posts) {
       if (err) {
         req.flash('error', err); 
-        res.redirect('/');
+        return res.redirect('/');
       }
       res.render('search', {
         title: "SEARCH:" + req.query.keyword,
@@ -248,13 +248,13 @@ module.exports = function(app) {
     User.get(req.params.name, function (err, user) {
       if (!user) {
         req.flash('error', '用户不存在!'); 
-        res.redirect('/');
+        return res.redirect('/');
       }
       //查询并返回该用户第 page 页的 10 篇文章
       Post.getTen(user.name, page, function (err, posts, total) {
         if (err) {
           req.flash('error', err); 
-          res.redirect('/');
+          return res.redirect('/');
         }
         res.render('user', {
           title: user.name,
@@ -274,7 +274,7 @@ module.exports = function(app) {
     Post.getOne(req.params.name, req.params.day, req.params.title, function (err, post) {
       if (err) {
         req.flash('error', err); 
-        res.redirect('/');
+        return res.redirect('/');
       }
       res.render('article', {
         title: req.params.title,
@@ -286,7 +286,7 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/u/:name/:day/:title', function(req,res){
+  app.post('/u/:name/:day/:title', function (req, res) {
     var date = new Date(),
         time = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
     var md5 = crypto.createHash('md5'),
@@ -304,7 +304,7 @@ module.exports = function(app) {
     newComment.save(function (err) {
       if (err) {
         req.flash('error', err); 
-        res.redirect('/');
+        return res.redirect('/');
       }
       req.flash('success', '留言成功!');
       res.redirect('back');
@@ -317,7 +317,7 @@ module.exports = function(app) {
     Post.edit(currentUser.name, req.params.day, req.params.title, function (err, post) {
       if (err) {
         req.flash('error', err); 
-        res.redirect('back');
+        return res.redirect('back');
       }
       res.render('edit', {
         title: '编辑',
@@ -336,7 +336,7 @@ module.exports = function(app) {
       var url = '/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title;
       if (err) {
         req.flash('error', err); 
-        res.redirect(url);//出错！返回文章页
+        return res.redirect(url);//出错！返回文章页
       }
       req.flash('success', '修改成功!');
       res.redirect(url);//成功！返回文章页
@@ -349,7 +349,7 @@ module.exports = function(app) {
     Post.remove(currentUser.name, req.params.day, req.params.title, function (err) {
       if (err) {
         req.flash('error', err); 
-        res.redirect('back');
+        return res.redirect('back');
       }
       req.flash('success', '删除成功!');
       res.redirect('/');
