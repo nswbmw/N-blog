@@ -36,13 +36,13 @@ Post.prototype.save = function(callback) {
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     //读取 posts 集合
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       //将文档插入 posts 集合
       collection.insert(post, {
@@ -60,13 +60,13 @@ Post.getTen = function(name, page, callback) {
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     //读取 posts 集合
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       var query = {};
       if (name) {
@@ -83,7 +83,7 @@ Post.getTen = function(name, page, callback) {
         }).toArray(function (err, docs) {
           mongodb.close();
           if (err) {
-            callback(err);
+            return callback(err);
           }
           //解析 markdown 为 html
           docs.forEach(function (doc) {
@@ -101,13 +101,13 @@ Post.getOne = function(name, day, title, callback) {
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     //读取 posts 集合
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       //根据用户名、发表日期及文章名进行查询
       collection.findOne({
@@ -117,7 +117,7 @@ Post.getOne = function(name, day, title, callback) {
       }, function (err, doc) {
         mongodb.close();
         if (err) {
-          callback(err);
+          return callback(err);
         }
         //解析 markdown 为 html
         if(doc){
@@ -145,13 +145,13 @@ Post.edit = function(name, day, title, callback) {
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     //读取 posts 集合
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       //根据用户名、发表日期及文章名进行查询
       collection.findOne({
@@ -161,7 +161,7 @@ Post.edit = function(name, day, title, callback) {
       }, function (err, doc) {
         mongodb.close();
         if (err) {
-          callback(err);
+          return callback(err);
         }
         callback(null, doc);//返回查询的一篇文章（markdown 格式）
       });
@@ -174,13 +174,13 @@ Post.update = function(name, day, title, post, callback) {
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     //读取 posts 集合
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       //更新文章内容
       collection.update({
@@ -192,7 +192,7 @@ Post.update = function(name, day, title, post, callback) {
       }, function (err, result) {
         mongodb.close();
         if (err) {
-          callback(err);
+          return callback(err);
         }
         callback(null);
       });
@@ -205,13 +205,13 @@ Post.remove = function(name, day, title, callback) {
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     //读取 posts 集合
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       //根据用户名、日期和标题查找并删除一篇文章
       collection.remove({
@@ -221,7 +221,7 @@ Post.remove = function(name, day, title, callback) {
       }, function (err, result) {
         mongodb.close();
         if (err) {
-          callback(err);
+          return callback(err);
         }
         callback(null);
       });
@@ -234,13 +234,13 @@ Post.getArchive = function(callback) {
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     //读取 posts 集合
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       //返回只包含 name、time、title 属性的文档组成的存档数组
       collection.find({}, {
@@ -252,7 +252,7 @@ Post.getArchive = function(callback) {
       }).toArray(function (err, docs) {
         mongodb.close();
         if (err) {
-          callback(err);
+          return callback(err);
         }
         callback(null, docs);
       });
@@ -265,19 +265,19 @@ Post.getTags = function(callback) {
   //打开数据库
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     //读取 posts 集合
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       //distinct 用来找出给定键的所有不同值
       collection.distinct("tags.tag", function (err, docs) {
         mongodb.close();
         if (err) {
-          callback(err);
+          return callback(err);
         }
         callback(null, docs);
       });
@@ -289,12 +289,12 @@ Post.getTags = function(callback) {
 Post.getTag = function(tag, callback) {
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       //通过 tags.tag 查询并返回只含有 name、time、title 键的文档组成的数组
       collection.find({
@@ -308,7 +308,7 @@ Post.getTag = function(tag, callback) {
       }).toArray(function (err, docs) {
         mongodb.close();
         if (err) {
-          callback(err);
+          return callback(err);
         }
         callback(null, docs);
       });
@@ -320,12 +320,12 @@ Post.getTag = function(tag, callback) {
 Post.search = function(keyword, callback) {
   mongodb.open(function (err, db) {
     if (err) {
-      callback(err);
+      return callback(err);
     }
     db.collection('posts', function (err, collection) {
       if (err) {
         mongodb.close();
-        callback(err);
+        return callback(err);
       }
       var pattern = new RegExp("^.*" + keyword + ".*$", "i");
       collection.find({
@@ -338,8 +338,8 @@ Post.search = function(keyword, callback) {
         time: -1
       }).toArray(function (err, docs) {
         mongodb.close();
-         if (err) {
-         callback(err);
+        if (err) {
+         return callback(err);
         }
         callback(null, docs);
       });
