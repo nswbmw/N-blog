@@ -1,0 +1,47 @@
+{
+  "name": "jade",
+  "description": "Jade template engine",
+  "version": "0.26.3",
+  "author": {
+    "name": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/visionmedia/jade"
+  },
+  "main": "./index.js",
+  "bin": {
+    "jade": "./bin/jade"
+  },
+  "man": [
+    "./jade.1"
+  ],
+  "dependencies": {
+    "commander": "0.6.1",
+    "mkdirp": "0.3.0"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "markdown": "*",
+    "stylus": "*",
+    "uubench": "*",
+    "should": "*",
+    "less": "*",
+    "uglify-js": "*"
+  },
+  "component": {
+    "scripts": {
+      "jade": "runtime.js"
+    }
+  },
+  "scripts": {
+    "prepublish": "npm prune"
+  },
+  "bugs": {
+    "url": "https://github.com/visionmedia/jade/issues"
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "jade@0.26.3",
+  "_from": "jade@0.26.3"
+}

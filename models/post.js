@@ -120,7 +120,7 @@ Post.getOne = function(name, day, title, callback) {
           return callback(err);
         }
         //解析 markdown 为 html
-        if(doc){
+        if (doc) {
           doc.post = markdown.toHTML(doc.post);
           doc.comments.forEach(function (comment) {
             comment.content = markdown.toHTML(comment.content);
@@ -135,6 +135,10 @@ Post.getOne = function(name, day, title, callback) {
         "title": title
       }, {
         $inc: {"pv": 1}
+      }, function (err, res) {
+        if (err) {
+          callback(err);
+        }
       });
     });
   });

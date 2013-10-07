@@ -1,0 +1,33 @@
+{
+  "name": "ejs",
+  "description": "Embedded JavaScript templates",
+  "version": "0.8.4",
+  "author": {
+    "name": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca"
+  },
+  "keywords": [
+    "template",
+    "engine",
+    "ejs"
+  ],
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "main": "./lib/ejs.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/visionmedia/ejs.git"
+  },
+  "scripts": {
+    "test": "mocha --require should --reporter spec"
+  },
+  "readme": "# EJS\n\nEmbedded JavaScript templates.\n\n[![Build Status](https://travis-ci.org/visionmedia/ejs.png)](https://travis-ci.org/visionmedia/ejs)\n\n## Installation\n\n    $ npm install ejs\n\n## Features\n\n  * Complies with the [Express](http://expressjs.com) view system\n  * Static caching of intermediate JavaScript\n  * Unbuffered code for conditionals etc `<% code %>`\n  * Escapes html by default with `<%= code %>`\n  * Unescaped buffering with `<%- code %>`\n  * Supports tag customization\n  * Filter support for designer-friendly templates\n  * Includes\n  * Client-side support\n  * Newline slurping with `<% code -%>` or `<% -%>` or `<%= code -%>` or `<%- code -%>`\n\n## Example\n\n    <% if (user) { %>\n\t    <h2><%= user.name %></h2>\n    <% } %>\n    \n## Try out a live example now\n\n<a href=\"https://runnable.com/ejs\" target=\"_blank\"><img src=\"https://runnable.com/external/styles/assets/runnablebtn.png\" style=\"width:67px;height:25px;\"></a>\n\n## Usage\n\n    ejs.compile(str, options);\n    // => Function\n\n    ejs.render(str, options);\n    // => str\n\n## Options\n\n  - `cache`           Compiled functions are cached, requires `filename`\n  - `filename`        Used by `cache` to key caches\n  - `scope`           Function execution context\n  - `debug`           Output generated function body\n  - `compileDebug`    When `false` no debug instrumentation is compiled\n  - `client`          Returns standalone compiled function\n  - `open`            Open tag, defaulting to \"<%\"\n  - `close`           Closing tag, defaulting to \"%>\"\n  - *                 All others are template-local variables\n\n## Includes\n\n Includes are relative to the template with the `include` statement,\n for example if you have \"./views/users.ejs\" and \"./views/user/show.ejs\"\n you would use `<% include user/show %>`. The included file(s) are literally\n included into the template, _no_ IO is performed after compilation, thus\n local variables are available to these included templates.\n\n```\n<ul>\n  <% users.forEach(function(user){ %>\n    <% include user/show %>\n  <% }) %>\n</ul>\n```\n\n## Custom delimiters\n\nCustom delimiters can also be applied globally:\n\n    var ejs = require('ejs');\n    ejs.open = '{{';\n    ejs.close = '}}';\n\nWhich would make the following a valid template:\n\n    <h1>{{= title }}</h1>\n\n## Filters\n\nEJS conditionally supports the concept of \"filters\". A \"filter chain\"\nis a designer friendly api for manipulating data, without writing JavaScript.\n\nFilters can be applied by supplying the _:_ modifier, so for example if we wish to take the array `[{ name: 'tj' }, { name: 'mape' },  { name: 'guillermo' }]` and output a list of names we can do this simply with filters:\n\nTemplate:\n\n    <p><%=: users | map:'name' | join %></p>\n\nOutput:\n\n    <p>Tj, Mape, Guillermo</p>\n\nRender call:\n\n    ejs.render(str, {\n        users: [\n          { name: 'tj' },\n          { name: 'mape' },\n          { name: 'guillermo' }\n        ]\n    });\n\nOr perhaps capitalize the first user's name for display:\n\n    <p><%=: users | first | capitalize %></p>\n\n## Filter list\n\nCurrently these filters are available:\n\n  - first\n  - last\n  - capitalize\n  - downcase\n  - upcase\n  - sort\n  - sort_by:'prop'\n  - size\n  - length\n  - plus:n\n  - minus:n\n  - times:n\n  - divided_by:n\n  - join:'val'\n  - truncate:n\n  - truncate_words:n\n  - replace:pattern,substitution\n  - prepend:val\n  - append:val\n  - map:'prop'\n  - reverse\n  - get:'prop'\n\n## Adding filters\n\n To add a filter simply add a method to the `.filters` object:\n \n```js\nejs.filters.last = function(obj) {\n  return obj[obj.length - 1];\n};\n```\n\n## Layouts\n\n  Currently EJS has no notion of blocks, only compile-time `include`s,\n  however you may still utilize this feature to implement \"layouts\" by\n  simply including a header and footer like so:\n\n```html\n<% include head %>\n<h1>Title</h1>\n<p>My page</p>\n<% include foot %>\n```\n\n## client-side support\n\n  include `./ejs.js` or `./ejs.min.js` and `require(\"ejs\").compile(str)`.\n\n## License \n\n(The MIT License)\n\nCopyright (c) 2009-2010 TJ Holowaychuk &lt;tj@vision-media.ca&gt;\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n'Software'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "readmeFilename": "Readme.md",
+  "bugs": {
+    "url": "https://github.com/visionmedia/ejs/issues"
+  },
+  "_id": "ejs@0.8.4",
+  "_from": "ejs@*"
+}
