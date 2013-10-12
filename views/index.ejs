@@ -13,7 +13,16 @@
     <% }) %>
   </p>
   <p><%- post.post %></p>
-  <p class="info">阅读：<%= post.pv %> | 评论：<%= post.comments.length %></p>
+  <p class="info">
+    阅读：<%= post.pv %> | 
+    评论：<%= post.comments.length %> | 
+    转载：
+    <% if (post.reprint_info.reprint_to) { %>
+      <%= post.reprint_info.reprint_to.length %>
+    <% } else { %>
+      <%= 0 %>
+    <% } %>
+  </p>
 <% }) %>
 <%- include paging %>
 <%- include footer %>

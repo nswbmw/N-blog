@@ -61,12 +61,12 @@ module.exports = function(app) {
         return res.redirect('/reg');//用户名存在则返回注册页
       }
       //如果不存在则新增用户
-      newUser.save(function (err) {
+      newUser.save(function (err, user) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/reg');
         }
-        req.session.user = newUser;//用户信息存入 session
+        req.session.user = user;//用户信息存入 session
         req.flash('success', '注册成功!');
         res.redirect('/');//注册成功后返回主页
       });
@@ -119,11 +119,8 @@ module.exports = function(app) {
   app.post('/post', checkLogin);
   app.post('/post', function (req, res) {
     var currentUser = req.session.user,
-        tags = [{"tag":req.body.tag1},{"tag":req.body.tag2},{"tag":req.body.tag3}];
-    var md5 = crypto.createHash('md5'),
-        email_MD5 = md5.update(currentUser.email.toLowerCase()).digest('hex'),
-        head = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48",
-        post = new Post(currentUser.name, head, req.body.title, tags, req.body.post);
+        tags = [{"tag": req.body.tag1},{"tag": req.body.tag2},{"tag": req.body.tag3}],
+        post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.post);
     post.save(function (err) {
       if (err) {
         req.flash('error', err); 
@@ -353,6 +350,29 @@ module.exports = function(app) {
       }
       req.flash('success', '删除成功!');
       res.redirect('/');
+    });
+  });
+
+  app.get('/reprint/:name/:day/:title', checkLogin);
+  app.get('/reprint/:name/:day/:title', function (req, res) {
+    Post.edit(req.params.name, req.params.day, req.params.title, function (err, post) {
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect(back);
+      }
+      var currentUser = req.session.user,
+          reprint_from = {name: post.name, day: post.time.day, title: post.title},
+          reprint_to = {name: currentUser.name, head: currentUser.head};
+      Post.reprint(reprint_from, reprint_to, function (err, post) {
+        if (err) {
+          req.flash('error', err); 
+          return res.redirect('back');
+        }
+        req.flash('success', '转载成功!');
+        var url = '/u/' + post.name + '/' + post.time.day + '/' + post.title;
+        //跳转到转载后的文章页面
+        res.redirect(url);
+      });
     });
   });
 
