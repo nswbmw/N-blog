@@ -1,6 +1,0 @@
-["html",
-  ["p",
-    { "id" : "para" },
-    "This is a paragraph\nwith an ID."
-  ]
-]

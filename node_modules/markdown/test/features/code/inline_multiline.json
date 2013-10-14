@@ -1,9 +1,0 @@
-["html",
-  ["p",
-    "foo ",
-    ["code",
-      "code\ncode"
-    ],
-    " bar"
-  ]
-]

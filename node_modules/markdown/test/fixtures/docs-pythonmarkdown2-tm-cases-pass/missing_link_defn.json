@@ -1,4 +1,0 @@
-["html", ["p", "This is a [missing link][missing] and a ", ["a", {
-    "href": "http://foo.com"
-},
-"used link"], "."]]

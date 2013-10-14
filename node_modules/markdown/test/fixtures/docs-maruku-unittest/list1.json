@@ -1,2 +1,0 @@
-["html", ["ul", ["li", ["p", "A list item with a blockquote:"],
-    ["blockquote", ["p", "This is a blockquote inside a list item."]]]]]

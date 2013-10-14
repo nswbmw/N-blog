@@ -1,8 +1,0 @@
-["html",
-  ["p",
-    ["img", {
-      "src": "/url/",
-      "alt": "alt text"
-    } ]
-  ]
-]

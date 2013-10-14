@@ -1,7 +1,0 @@
-["html",
-  ["p",
-    "The quick brown fox",
-    ["br"],
-    "jumps over the lazy dog."
-  ]
-]

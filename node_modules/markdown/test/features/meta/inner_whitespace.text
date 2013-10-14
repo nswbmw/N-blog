@@ -1,8 +1,0 @@
-We can have no whitespace
-{:#none}
-
-Or a single whitespace
-{: #one }
-
-And even lots of whitespace
-{:      #lots      }

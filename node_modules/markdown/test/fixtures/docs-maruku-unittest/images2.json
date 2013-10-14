@@ -1,8 +1,0 @@
-["html", ["p", "This is an ", ["img", {
-    "src": "image.jpg",
-    "alt": "image"
-}], "."],
-    ["p", "This is an ", ["img", {
-        "src": "image.jpg",
-        "alt": "image"
-    }], "."]]

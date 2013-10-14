@@ -1,3 +1,0 @@
-["html", ["p", "blah <img src=\"dangerous\"> blah"],
-    ["p", "<div>yowzer!</div>"],
-    ["p", "blah"]]

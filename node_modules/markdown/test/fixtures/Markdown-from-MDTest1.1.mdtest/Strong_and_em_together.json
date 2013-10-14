@@ -1,4 +1,0 @@
-["html", ["p", ["strong", ["em", "This is strong and em."]]],
-    ["p", "So is ", ["strong", ["em", "this"]], " word."],
-    ["p", ["strong", ["em", "This is strong and em."]]],
-    ["p", "So is ", ["strong", ["em", "this"]], " word."]]

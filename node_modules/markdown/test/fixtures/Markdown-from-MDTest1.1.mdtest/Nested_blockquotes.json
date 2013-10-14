@@ -1,3 +1,0 @@
-["html", ["blockquote", ["p", "foo"],
-    ["blockquote", ["p", "bar"]],
-    ["p", "foo"]]]

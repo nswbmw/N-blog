@@ -1,2 +1,0 @@
-["html", ["p", "From ", ["code", "<!--"], " to ", ["code", "-->"], "\u000aon two lines."],
-    ["p", "From ", ["code", "<!--"], "\u000ato ", ["code", "-->"], "\u000aon three lines."]]
