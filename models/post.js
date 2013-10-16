@@ -228,37 +228,45 @@ Post.remove = function(name, day, title, callback) {
           mongodb.close();
           return callback(err);
         }
-        //更新原文章所在文档的 reprint_to
-        collection.update({
-          "name": doc.reprint_info.reprint_from.name,
-          "time.day": doc.reprint_info.reprint_from.day,
-          "title": doc.reprint_info.reprint_from.title
-        }, {
-          $pull: {
-            "reprint_info.reprint_to": {
-              "name": name,
-              "day": day,
-              "title": title
-          }}
-        }, function (err, result) {
-          if (err) {
-            mongodb.close();
-            return callback(err);
-          }
-          //删除转载来的文章所在的文档
-          collection.remove({
-            "name": name,
-            "time.day": day,
-            "title": title
+        //如果有 reprint_from，即该文章是转载来的，先保存下来
+        var reprint_from = "";
+        if (doc.reprint_info.reprint_from) {
+          reprint_from = doc.reprint_info.reprint_from;
+        }
+        if (reprint_from != "") {
+          //更新原文章所在文档的 reprint_to
+          collection.update({
+            "name": reprint_from.name,
+            "time.day": reprint_from.day,
+            "title": reprint_from.title
           }, {
-            w: 1
+            $pull: {
+              "reprint_info.reprint_to": {
+                "name": name,
+                "day": day,
+                "title": title
+            }}
           }, function (err) {
-            mongodb.close();
             if (err) {
+              mongodb.close();
               return callback(err);
             }
-            callback(null);
           });
+        }
+
+        //删除转载来的文章所在的文档
+        collection.remove({
+          "name": name,
+          "time.day": day,
+          "title": title
+        }, {
+          w: 1
+        }, function (err) {
+          mongodb.close();
+          if (err) {
+            return callback(err);
+          }
+          callback(null);
         });
       });
     });
@@ -441,16 +449,17 @@ Post.reprint = function(reprint_from, reprint_to, callback) {
             mongodb.close();
             return callback(err);
           }
-          //将转载生成的副本修改后存入数据库，并返回存储后的文档
-          collection.insert(doc, {
-            safe: true
-          }, function (err, post) {
-            mongodb.close();
-            if (err) {
-              return callback(err);
-            }
-            callback(err, post[0]);
-          });
+        });
+
+        //将转载生成的副本修改后存入数据库，并返回存储后的文档
+        collection.insert(doc, {
+          safe: true
+        }, function (err, post) {
+          mongodb.close();
+          if (err) {
+            return callback(err);
+          }
+          callback(err, post[0]);
         });
       });
     });
