@@ -18,9 +18,10 @@ Post.prototype.save = function(callback) {
   var time = {
       date: date,
       year : date.getFullYear(),
-      month : date.getFullYear() + "-" + (date.getMonth()+1),
-      day : date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate(),
-      minute : date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes()
+      month : date.getFullYear() + "-" + (date.getMonth() + 1),
+      day : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
+      minute : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
+      date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
   }
   //要存入数据库的文档
   var post = {
@@ -48,9 +49,12 @@ Post.prototype.save = function(callback) {
       //将文档插入 posts 集合
       collection.insert(post, {
         safe: true
-      }, function (err, post) {
+      }, function (err) {
         mongodb.close();
-        callback(null);
+        if (err) {
+          return callback(err);//失败！返回 err
+        }
+        callback(null);//返回 err 为 null
       });
     });
   });
@@ -116,30 +120,31 @@ Post.getOne = function(name, day, title, callback) {
         "time.day": day,
         "title": title
       }, function (err, doc) {
-        mongodb.close();
         if (err) {
+          mongodb.close();
           return callback(err);
         }
-        //解析 markdown 为 html
         if (doc) {
+          //每访问 1 次，pv 值增加 1
+          collection.update({
+            "name": name,
+            "time.day": day,
+            "title": title
+          }, {
+            $inc: {"pv": 1}
+          }, function (err) {
+            if (err) {
+              return callback(err);
+            }
+          });
+          //解析 markdown 为 html
           doc.post = markdown.toHTML(doc.post);
           doc.comments.forEach(function (comment) {
             comment.content = markdown.toHTML(comment.content);
           });
         }
+        mongodb.close();
         callback(null, doc);//返回查询的一篇文章
-      });
-      //每访问 1 次，pv 值增加 1
-      collection.update({
-        "name": name,
-        "time.day": day,
-        "title": title
-      }, {
-        $inc: {"pv": 1}
-      }, function (err, res) {
-        if (err) {
-          callback(err);
-        }
       });
     });
   });
@@ -192,9 +197,9 @@ Post.update = function(name, day, title, post, callback) {
         "name": name,
         "time.day": day,
         "title": title
-      },{
+      }, {
         $set: {post: post}
-      }, function (err, result) {
+      }, function (err) {
         mongodb.close();
         if (err) {
           return callback(err);
@@ -228,7 +233,7 @@ Post.remove = function(name, day, title, callback) {
           mongodb.close();
           return callback(err);
         }
-        //如果有 reprint_from，即该文章是转载来的，先保存下来
+        //如果有 reprint_from，即该文章是转载来的，先保存下来 reprint_from
         var reprint_from = "";
         if (doc.reprint_info.reprint_from) {
           reprint_from = doc.reprint_info.reprint_from;
@@ -360,7 +365,7 @@ Post.getTag = function(tag, callback) {
   });
 };
 
-//返回通过标题关键字查询的所有文章
+//返回通过标题关键字查询的所有文章信息
 Post.search = function(keyword, callback) {
   mongodb.open(function (err, db) {
     if (err) {
@@ -402,7 +407,7 @@ Post.reprint = function(reprint_from, reprint_to, callback) {
         mongodb.close();
         return callback(err);
       }
-      //找到被转载的原文档
+      //找到被转载的文章的原文档
       collection.findOne({
         "name": reprint_from.name,
         "time.day": reprint_from.day,
@@ -417,12 +422,13 @@ Post.reprint = function(reprint_from, reprint_to, callback) {
         var time = {
             date: date,
             year : date.getFullYear(),
-            month : date.getFullYear() + "-" + (date.getMonth()+1),
-            day : date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate(),
-            minute : date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes()
+            month : date.getFullYear() + "-" + (date.getMonth() + 1),
+            day : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
+            minute : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
+            date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
         }
 
-        delete doc._id;
+        delete doc._id;//注意要删掉原来的 _id
 
         doc.name = reprint_to.name;
         doc.head = reprint_to.head;
@@ -440,11 +446,11 @@ Post.reprint = function(reprint_from, reprint_to, callback) {
         }, {
           $push: {
             "reprint_info.reprint_to": {
-              "name": reprint_to.name,
+              "name": doc.name,
               "day": time.day,
               "title": doc.title
           }}
-        }, function (err, result) {
+        }, function (err) {
           if (err) {
             mongodb.close();
             return callback(err);

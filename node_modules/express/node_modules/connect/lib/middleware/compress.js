@@ -11,6 +11,7 @@
 
 var zlib = require('zlib');
 var utils = require('../utils');
+var Negotiator = require('negotiator');
 
 /**
  * Supported content-encoding methods.
@@ -68,9 +69,8 @@ exports.filter = function(req, res){
 
 module.exports = function compress(options) {
   options = options || {};
-  var names = Object.keys(exports.methods)
-    , filter = options.filter || exports.filter
-    , threshold;
+  var filter = options.filter || exports.filter;
+  var threshold;
 
   if (false === options.threshold || 0 === options.threshold) {
     threshold = 0
@@ -82,29 +82,29 @@ module.exports = function compress(options) {
 
   return function compress(req, res, next){
     var accept = req.headers['accept-encoding']
-      , vary = res.getHeader('Vary')
       , write = res.write
       , end = res.end
       , compress = true
-      , stream
-      , method;
-
-    // vary
-    if (!vary) {
-      res.setHeader('Vary', 'Accept-Encoding');
-    } else if (!~vary.indexOf('Accept-Encoding')) {
-      res.setHeader('Vary', vary + ', Accept-Encoding');
-    }
+      , stream;
 
     // see #724
     req.on('close', function(){
       res.write = res.end = function(){};
     });
 
+    // flush is noop by default
+    res.flush = noop;
+
     // proxy
 
     res.write = function(chunk, encoding){
-      if (!this.headerSent) this._implicitHeader();
+      if (!this.headerSent) {
+        // if content-length is set and is lower
+        // than the threshold, don't compress
+        var length = res.getHeader('content-length');
+        if (!isNaN(length) && length < threshold) compress = false;
+        this._implicitHeader();
+      }
       return stream
         ? stream.write(new Buffer(chunk, encoding))
         : write.call(res, chunk, encoding);
@@ -124,6 +124,17 @@ module.exports = function compress(options) {
     };
 
     res.on('header', function(){
+      // default request filter
+      if (!filter(req, res)) return;
+
+      // vary
+      var vary = res.getHeader('Vary');
+      if (!vary) {
+        res.setHeader('Vary', 'Accept-Encoding');
+      } else if (!~vary.indexOf('Accept-Encoding')) {
+        res.setHeader('Vary', vary + ', Accept-Encoding');
+      }
+
       if (!compress) return;
 
       var encoding = res.getHeader('Content-Encoding') || 'identity';
@@ -131,40 +142,30 @@ module.exports = function compress(options) {
       // already encoded
       if ('identity' != encoding) return;
 
-      // default request filter
-      if (!filter(req, res)) return;
-
       // SHOULD use identity
       if (!accept) return;
 
       // head
       if ('HEAD' == req.method) return;
 
-      // default to gzip
-      if ('*' == accept.trim()) method = 'gzip';
-
       // compression method
-      if (!method) {
-        for (var i = 0, len = names.length; i < len; ++i) {
-          if (~accept.indexOf(names[i])) {
-            method = names[i];
-            break;
-          }
-        }
-      }
-
-      // compression method
-      if (!method) return;
+      var method = new Negotiator(req).preferredEncoding(['gzip', 'deflate', 'identity']);
+      // negotiation failed
+      if (method === 'identity') return;
 
       // compression stream
       stream = exports.methods[method](options);
+
+      // overwrite the flush method
+      res.flush = function(){
+        stream.flush();
+      }
 
       // header fields
       res.setHeader('Content-Encoding', method);
       res.removeHeader('Content-Length');
 
       // compression
-
       stream.on('data', function(chunk){
         write.call(res, chunk);
       });
@@ -187,3 +188,5 @@ function getSize(chunk) {
     ? chunk.length
     : Buffer.byteLength(chunk);
 }
+
+function noop(){}

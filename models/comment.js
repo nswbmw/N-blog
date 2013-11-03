@@ -33,8 +33,11 @@ Comment.prototype.save = function(callback) {
         "title": title
       }, {
         $push: {"comments": comment}
-      } , function (err, result) {
+      } , function (err) {
           mongodb.close();
+          if (err) {
+            return callback(err);
+          }
           callback(null);
       });   
     });

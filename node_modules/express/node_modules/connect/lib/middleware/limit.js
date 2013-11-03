@@ -32,6 +32,11 @@ var utils = require('../utils'),
 module.exports = function limit(bytes){
   if ('string' == typeof bytes) bytes = utils.parseBytes(bytes);
   if ('number' != typeof bytes) throw new Error('limit() bytes required');
+
+  if (process.env.NODE_ENV !== 'test') {
+    console.warn('connect.limit() will be removed in connect 3.0');
+  }
+
   return function limit(req, res, next){
     var received = 0
       , len = req.headers['content-length']

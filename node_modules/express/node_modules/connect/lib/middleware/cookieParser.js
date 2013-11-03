@@ -35,7 +35,7 @@ var utils = require('./../utils')
  * @api public
  */
 
-module.exports = function cookieParser(secret){
+module.exports = function cookieParser(secret, opt){
   return function cookieParser(req, res, next) {
     if (req.cookies) return next();
     var cookies = req.headers.cookie;
@@ -46,7 +46,7 @@ module.exports = function cookieParser(secret){
 
     if (cookies) {
       try {
-        req.cookies = cookie.parse(cookies);
+        req.cookies = cookie.parse(cookies, opt);
         if (secret) {
           req.signedCookies = utils.parseSignedCookies(req.cookies, secret);
           req.signedCookies = utils.parseJSONCookies(req.signedCookies);

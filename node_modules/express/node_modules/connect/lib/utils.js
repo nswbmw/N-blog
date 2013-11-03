@@ -13,6 +13,7 @@
 var http = require('http')
   , crypto = require('crypto')
   , parse = require('url').parse
+  , sep = require('path').sep
   , signature = require('cookie-signature')
   , nodeVersion = process.versions.node.split('.');
 
@@ -80,7 +81,7 @@ exports.error = function(code, msg){
 exports.md5 = function(str, encoding){
   return crypto
     .createHash('md5')
-    .update(str)
+    .update(str, 'utf8')
     .digest(encoding || 'hex');
 };
 
@@ -272,6 +273,7 @@ exports.pause = exports.brokenPause
  */
 
 exports.removeContentHeaders = function(res){
+  if (!res._headers) return;
   Object.keys(res._headers).forEach(function(field){
     if (0 == field.indexOf('content')) {
       res.removeHeader(field);
@@ -369,7 +371,14 @@ exports.parseUrl = function(req){
   if (parsed && parsed.href == req.url) {
     return parsed;
   } else {
-    return req._parsedUrl = parse(req.url);
+    parsed = parse(req.url);
+
+    if (parsed.auth && !parsed.protocol && ~parsed.href.indexOf('//')) {
+      // This parses pathnames, and a strange pathname like //r@e should work
+      parsed = parse(req.url.replace(/@/g, '%40'));
+    }
+
+    return req._parsedUrl = parsed;
   }
 };
 
@@ -382,5 +391,18 @@ exports.parseUrl = function(req){
  */
 
 exports.parseBytes = require('bytes');
+
+/**
+ * Normalizes the path separator from system separator
+ * to URL separator, aka `/`.
+ *
+ * @param {String} path
+ * @return {String}
+ * @api private
+ */
+
+exports.normalizeSlashes = function normalizeSlashes(path) {
+  return path.split(sep).join('/');
+};
 
 function noop() {}

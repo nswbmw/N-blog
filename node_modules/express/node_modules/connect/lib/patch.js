@@ -47,9 +47,13 @@ if (!res._hasConnectPatch) {
     // special-case Set-Cookie
     if (this._headers && 'set-cookie' == key) {
       if (prev = this.getHeader(field)) {
-        val = Array.isArray(prev)
-          ? prev.concat(val)
-          : [prev, val];
+          if (Array.isArray(prev)) {
+              val = prev.concat(val);
+          } else if (Array.isArray(val)) {
+              val = val.concat(prev);
+          } else {
+              val = [prev, val];
+          }
       }
     // charset
     } else if ('content-type' == key && this.charset) {
@@ -69,10 +73,16 @@ if (!res._hasConnectPatch) {
     return _renderHeaders.call(this);
   };
 
-  res.writeHead = function(){
+  res.writeHead = function(statusCode, reasonPhrase, headers){
+    if (typeof reasonPhrase === 'object') headers = reasonPhrase;
+    if (typeof headers === 'object') {
+      Object.keys(headers).forEach(function(key){
+        this.setHeader(key, headers[key]);
+      }, this);
+    }
     if (!this._emittedHeader) this.emit('header');
     this._emittedHeader = true;
-    return writeHead.apply(this, arguments);
+    return writeHead.call(this, statusCode, reasonPhrase);
   };
 
   res._hasConnectPatch = true;

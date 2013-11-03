@@ -17,8 +17,8 @@ var Session = require('./session/session')
   , Store = require('./session/store')
   , utils = require('./../utils')
   , uid = require('uid2')
-  , parse = utils.parseUrl
-  , crc32 = require('buffer-crc32');
+  , crc32 = require('buffer-crc32')
+  , parse = require('url').parse;
 
 // environment
 
@@ -191,7 +191,8 @@ function session(options){
     , store = options.store || new MemoryStore
     , cookie = options.cookie || {}
     , trustProxy = options.proxy
-    , storeReady = true;
+    , storeReady = true
+    , rollingSessions = options.rolling || false;
 
   // notify user that this store is not
   // meant for a production environment
@@ -218,7 +219,8 @@ function session(options){
     if (!storeReady) return debug('store is disconnected'), next();
 
     // pathname mismatch
-    if (0 != req.originalUrl.indexOf(cookie.path || '/')) return next();
+    var originalPath = parse(req.originalUrl).pathname;
+    if (0 != originalPath.indexOf(cookie.path || '/')) return next();
 
     // backwards compatibility for signed cookies
     // req.secret is passed from the cookie parser middleware
@@ -227,7 +229,6 @@ function session(options){
     // ensure secret is available or bail
     if (!secret) throw new Error('`secret` option required for sessions');
 
-    // parse url
     var originalHash
       , originalId;
 
@@ -255,15 +256,20 @@ function session(options){
       // only send secure cookies via https
       if (cookie.secure && !tls) return debug('not secured');
 
-      // long expires, handle expiry server-side
-      if (!isNew && cookie.hasLongExpires) return debug('already set cookie');
-
-      // browser-session length cookie
-      if (null == cookie.expires) {
-        if (!isNew) return debug('already set browser-session cookie');
-      // compare hashes and ids
-      } else if (originalHash == hash(req.session) && originalId == req.session.id) {
-        return debug('unmodified session');
+      // in case of rolling session, always reset the cookie
+      if (!rollingSessions) {
+      
+        // long expires, handle expiry server-side
+        if (!isNew && cookie.hasLongExpires) return debug('already set cookie');
+  
+        // browser-session length cookie
+        if (null == cookie.expires) {
+          if (!isNew) return debug('already set browser-session cookie');
+        // compare hashes and ids
+        } else if (originalHash == hash(req.session) && originalId == req.session.id) {
+          return debug('unmodified session');
+        }
+        
       }
 
       var val = 's:' + signature.sign(req.sessionID, secret);

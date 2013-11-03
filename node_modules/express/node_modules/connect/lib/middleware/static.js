@@ -53,8 +53,13 @@ exports = module.exports = function(root, options){
 
   return function staticMiddleware(req, res, next) {
     if ('GET' != req.method && 'HEAD' != req.method) return next();
+    var originalUrl = url.parse(req.originalUrl);
     var path = parse(req).pathname;
     var pause = utils.pause(req);
+
+    if (path == '/' && originalUrl.pathname[originalUrl.pathname.length - 1] != '/') {
+      return directory();
+    }
 
     function resume() {
       next();
@@ -63,10 +68,12 @@ exports = module.exports = function(root, options){
 
     function directory() {
       if (!redirect) return resume();
-      var pathname = url.parse(req.originalUrl).pathname;
+      var target;
+      originalUrl.pathname += '/';
+      target = url.format(originalUrl);
       res.statusCode = 303;
-      res.setHeader('Location', pathname + '/');
-      res.end('Redirecting to ' + utils.escape(pathname) + '/');
+      res.setHeader('Location', target);
+      res.end('Redirecting to ' + utils.escape(target));
     }
 
     function error(err) {

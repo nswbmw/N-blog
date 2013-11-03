@@ -53,8 +53,10 @@ module.exports = function staticCache(options){
     , cache = new Cache(options.maxObjects || 128)
     , maxlen = options.maxLength || 1024 * 256;
 
-  console.warn('connect.staticCache() is deprecated and will be removed in 3.0');
-  console.warn('use varnish or similar reverse proxy caches.');
+  if (process.env.NODE_ENV !== 'test') {
+    console.warn('connect.staticCache() is deprecated and will be removed in 3.0');
+    console.warn('use varnish or similar reverse proxy caches.');
+  }
 
   return function staticCache(req, res, next){
     var key = cacheKey(req)

@@ -5,21 +5,27 @@
 var crypto = require('crypto');
 
 /**
- * The size ratio between a base64 string and the equivalent byte buffer
+ * 62 characters in the ascii range that can be used in URLs without special
+ * encoding.
  */
-
-var ratio = Math.log(64) / Math.log(256);
+var UIDCHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 /**
- * Make a Base64 string ready for use in URLs
+ * Make a Buffer into a string ready for use in URLs
  *
  * @param {String}
  * @returns {String}
  * @api private
  */
+function tostr(bytes) {
+  var chars, r, i;
 
-function urlReady(str) {
-  return str.replace(/\+/g, '_').replace(/\//g, '-');
+  r = [];
+  for (i = 0; i < bytes.length; i++) {
+    r.push(UIDCHARS[bytes[i] % UIDCHARS.length]);
+  }
+
+  return r.join('');
 }
 
 /**
@@ -31,13 +37,13 @@ function urlReady(str) {
  */
 
 function uid(length, cb) {
-  var numbytes = Math.ceil(length * ratio);
+
   if (typeof cb === 'undefined') {
-    return urlReady(crypto.randomBytes(numbytes).toString('base64').slice(0, length));
+    return tostr(crypto.pseudoRandomBytes(length));
   } else {
-    crypto.randomBytes(numbytes, function(err, bytes) {
+    crypto.pseudoRandomBytes(length, function(err, bytes) {
        if (err) return cb(err);
-       cb(null, urlReady(bytes.toString('base64').slice(0, length)));
+       cb(null, tostr(bytes));
     })
   }
 }

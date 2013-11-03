@@ -67,7 +67,7 @@ module.exports = function csrf(options) {
       Object.defineProperty(req.session, '_csrf', {
         configurable: true,
         get: function() {
-          console.warn('req.session._csrf is deprecated, use req.csrfToken([callback]) instead');
+          console.warn('req.session._csrf is deprecated, use req.csrfToken() instead');
           return req.csrfToken();
         }
       });

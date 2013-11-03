@@ -15,11 +15,11 @@ module.exports = function(app) {
       } 
       res.render('index', {
         title: '主页',
-        user: req.session.user,
         posts: posts,
         page: page,
         isFirstPage: (page - 1) == 0,
-        isLastPage: ((page - 1)*10 + posts.length) == total,
+        isLastPage: ((page - 1) * 10 + posts.length) == total,
+        user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
       });
@@ -44,7 +44,7 @@ module.exports = function(app) {
     //检验用户两次输入的密码是否一致
     if (password_re != password) {
       req.flash('error', '两次输入的密码不一致!'); 
-      return res.redirect('/reg');
+      return res.redirect('/reg');//返回主册页
     }
     //生成密码的 md5 值
     var md5 = crypto.createHash('md5'),
@@ -58,13 +58,13 @@ module.exports = function(app) {
     User.get(newUser.name, function (err, user) {
       if (user) {
         req.flash('error', '用户已存在!');
-        return res.redirect('/reg');//用户名存在则返回注册页
+        return res.redirect('/reg');//返回注册页
       }
       //如果不存在则新增用户
       newUser.save(function (err, user) {
         if (err) {
           req.flash('error', err);
-          return res.redirect('/reg');
+          return res.redirect('/reg');//注册失败返回主册页
         }
         req.session.user = user;//用户信息存入 session
         req.flash('success', '注册成功!');
@@ -102,7 +102,7 @@ module.exports = function(app) {
       //用户名密码都匹配后，将用户信息存入 session
       req.session.user = user;
       req.flash('success', '登陆成功!');
-      res.redirect('/');
+      res.redirect('/');//登陆成功后跳转到主页
     });
   });
 
@@ -127,7 +127,7 @@ module.exports = function(app) {
         return res.redirect('/');
       }
       req.flash('success', '发布成功!');
-      res.redirect('/');
+      res.redirect('/');//发表成功跳转到主页
     });
   });
 
@@ -135,7 +135,7 @@ module.exports = function(app) {
   app.get('/logout', function (req, res) {
     req.session.user = null;
     req.flash('success', '登出成功!');
-    res.redirect('/');//登出后跳转到主页
+    res.redirect('/');//登出成功后跳转到主页
   });
 
   app.get('/upload', checkLogin);
@@ -258,10 +258,10 @@ module.exports = function(app) {
           posts: posts,
           page: page,
           isFirstPage: (page - 1) == 0,
-          isLastPage: ((page - 1)*10 + posts.length) == total,
-          user : req.session.user,
-          success : req.flash('success').toString(),
-          error : req.flash('error').toString()
+          isLastPage: ((page - 1) * 10 + posts.length) == total,
+          user: req.session.user,
+          success: req.flash('success').toString(),
+          error: req.flash('error').toString()
         });
       });
     }); 
@@ -285,7 +285,8 @@ module.exports = function(app) {
 
   app.post('/u/:name/:day/:title', function (req, res) {
     var date = new Date(),
-        time = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+        time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + 
+               date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
     var md5 = crypto.createHash('md5'),
         email_MD5 = md5.update(req.body.email.toLowerCase()).digest('hex'),
         head = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48"; 
@@ -301,7 +302,7 @@ module.exports = function(app) {
     newComment.save(function (err) {
       if (err) {
         req.flash('error', err); 
-        return res.redirect('/');
+        return res.redirect('back');
       }
       req.flash('success', '留言成功!');
       res.redirect('back');
@@ -391,7 +392,7 @@ module.exports = function(app) {
   function checkNotLogin(req, res, next) {
     if (req.session.user) {
       req.flash('error', '已登录!'); 
-      res.redirect('back');
+      res.redirect('back');//返回之前的页面
     }
     next();
   }

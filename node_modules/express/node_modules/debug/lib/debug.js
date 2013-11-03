@@ -108,6 +108,8 @@ function debug(name) {
   var c = color();
 
   function colored(fmt) {
+    fmt = coerce(fmt);
+
     var curr = new Date;
     var ms = curr - (prev[name] || curr);
     prev[name] = curr;
@@ -121,6 +123,8 @@ function debug(name) {
   }
 
   function plain(fmt) {
+    fmt = coerce(fmt);
+
     fmt = new Date().toUTCString()
       + ' ' + name + ' ' + fmt;
     console.error.apply(this, arguments);
@@ -131,4 +135,13 @@ function debug(name) {
   return isatty || process.env.DEBUG_COLORS
     ? colored
     : plain;
+}
+
+/**
+ * Coerce `val`.
+ */
+
+function coerce(val) {
+  if (val instanceof Error) return val.stack || val.message;
+  return val;
 }

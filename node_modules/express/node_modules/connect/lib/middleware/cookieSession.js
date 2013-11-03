@@ -12,7 +12,8 @@ var utils = require('./../utils')
   , Cookie = require('./session/cookie')
   , debug = require('debug')('connect:cookieSession')
   , signature = require('cookie-signature')
-  , crc32 = require('buffer-crc32');
+  , crc32 = require('buffer-crc32')
+  , url = require('url');
 
 /**
  * Cookie Session:
@@ -59,7 +60,8 @@ module.exports = function cookieSession(options){
     var cookie = req.session.cookie = new Cookie(options.cookie);
 
     // pathname mismatch
-    if (0 != req.originalUrl.indexOf(cookie.path)) return next();
+    var originalPath = url.parse(req.originalUrl).pathname;
+    if (0 != originalPath.indexOf(cookie.path)) return next();
 
     // cookieParser secret
     if (!options.secret && req.secret) {

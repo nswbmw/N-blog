@@ -1,4 +1,3 @@
-
 # debug
 
   tiny node.js debugging utility modelled after node core's debugging technique.
@@ -58,10 +57,11 @@ setInterval(function(){
 
   ![](http://f.cl.ly/items/2i3h1d3t121M2Z1A3Q0N/Screenshot.png)
 
-  When stdout is not a TTY, `Date#toUTCString()` is used, making it more useful for logging the debug information as shown below:
+  When stderr is not a TTY, `Date#toUTCString()` is used, making it more useful for logging the debug information as shown below:
+  _(NOTE: Debug now uses stderr instead of stdout, so the correct shell command for this example is actually `DEBUG=* node example/worker 2> out &`)_
   
   ![](http://f.cl.ly/items/112H3i0e0o0P0a2Q2r11/Screenshot.png)
-
+  
 ## Conventions
 
  If you're using this in one or more of your libraries, you _should_ use the name of your library so that developers may toggle debugging as desired without guessing names. If you have more than one debuggers you _should_ prefix them with your library name and use ":" to separate features. For example "bodyParser" from Connect would then be "connect:bodyParser". 
