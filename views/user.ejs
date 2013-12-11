@@ -9,8 +9,8 @@
     日期：<%= post.time.minute %> | 
     标签：
     <% post.tags.forEach(function (tag, index) { %>
-      <% if (tag.tag) { %>
-        <a class="tag" href="/tags/<%= tag.tag %>"><%= tag.tag %></a>
+      <% if (tag) { %>
+        <a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
       <% } %>
     <% }) %>
     <% if (post.reprint_info.reprint_from) { %>

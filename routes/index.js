@@ -119,7 +119,7 @@ module.exports = function(app) {
   app.post('/post', checkLogin);
   app.post('/post', function (req, res) {
     var currentUser = req.session.user,
-        tags = [{"tag": req.body.tag1},{"tag": req.body.tag2},{"tag": req.body.tag3}],
+        tags = [req.body.tag1, req.body.tag2, req.body.tag3],
         post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.post);
     post.save(function (err) {
       if (err) {

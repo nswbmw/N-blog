@@ -323,7 +323,7 @@ Post.getTags = function(callback) {
         return callback(err);
       }
       //distinct 用来找出给定键的所有不同值
-      collection.distinct("tags.tag", function (err, docs) {
+      collection.distinct("tags", function (err, docs) {
         mongodb.close();
         if (err) {
           return callback(err);
@@ -345,9 +345,10 @@ Post.getTag = function(tag, callback) {
         mongodb.close();
         return callback(err);
       }
-      //通过 tags.tag 查询并返回只含有 name、time、title 键的文档组成的数组
+      //查询所有 tags 数组内包含 tag 的文档
+      //并返回只含有 name、time、title 组成的数组
       collection.find({
-        "tags.tag": tag
+        "tags": tag
       }, {
         "name": 1,
         "time": 1,
