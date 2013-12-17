@@ -133,6 +133,7 @@ Post.getOne = function(name, day, title, callback) {
           }, {
             $inc: {"pv": 1}
           }, function (err) {
+            mongodb.close();
             if (err) {
               return callback(err);
             }
@@ -142,9 +143,8 @@ Post.getOne = function(name, day, title, callback) {
           doc.comments.forEach(function (comment) {
             comment.content = markdown.toHTML(comment.content);
           });
+          callback(null, doc);//返回查询的一篇文章
         }
-        mongodb.close();
-        callback(null, doc);//返回查询的一篇文章
       });
     });
   });
