@@ -1,0 +1,19 @@
+{
+  "app": 3000,
+  "session": {
+    "resave": true,
+    "saveUninitialized": true,
+    "secret": "blog",
+    "cookie": {
+      "maxAge": 2592000000
+    }
+  },
+  "mongo": {
+    "host": "localhost",
+    "port": 27017,
+    "db": "blog",
+    "max": 10,
+    "min": 1,
+    "timeout": 3600000
+  }
+}
