@@ -1,16 +1,23 @@
 {
-  "name": "blog",
-  "version": "0.0.1",
+  "name": "N-blog",
+  "version": "1.0.0",
   "private": true,
+  "description": "N-blog for express4.x",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app"
   },
   "dependencies": {
-    "express": "^3.4.4",
-    "ejs": "*",
-    "mongodb": "*",
-    "connect-mongo": "*",
-    "connect-flash": "*",
-    "markdown": "*"
+    "express": "4.10.2",
+    "body-parser": "1.9.0",
+    "cookie-parser": "1.3.3",
+    "morgan": "1.3.1",
+    "serve-favicon": "2.1.5",
+    "ejs": "1.0.0",
+    "markdown": "0.5.0",
+    "mongodb": "1.4.15",
+    "express-session": "1.9.1",
+    "connect-flash": "0.1.1",
+    "connect-mongo": "0.4.1",
+    "multer": "0.1.6"
   }
 }

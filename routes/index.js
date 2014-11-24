@@ -150,18 +150,6 @@ module.exports = function(app) {
 
   app.post('/upload', checkLogin);
   app.post('/upload', function (req, res) {
-    for (var i in req.files) {
-      if (req.files[i].size == 0){
-        // 使用同步方式删除一个文件
-        fs.unlinkSync(req.files[i].path);
-        console.log('Successfully removed an empty file!');
-      } else {
-        var target_path = './public/images/' + req.files[i].name;
-        // 使用同步方式重命名一个文件
-        fs.renameSync(req.files[i].path, target_path);
-        console.log('Successfully renamed a file!');
-      }
-    }
     req.flash('success', '文件上传成功!');
     res.redirect('/upload');
   });
@@ -243,6 +231,10 @@ module.exports = function(app) {
     var page = req.query.p ? parseInt(req.query.p) : 1;
     //检查用户是否存在
     User.get(req.params.name, function (err, user) {
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect('/');
+      }
       if (!user) {
         req.flash('error', '用户不存在!'); 
         return res.redirect('/');
@@ -331,7 +323,7 @@ module.exports = function(app) {
   app.post('/edit/:name/:day/:title', function (req, res) {
     var currentUser = req.session.user;
     Post.update(currentUser.name, req.params.day, req.params.title, req.body.post, function (err) {
-      var url = '/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title;
+      var url = encodeURI('/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title);
       if (err) {
         req.flash('error', err); 
         return res.redirect(url);//出错！返回文章页
@@ -359,7 +351,7 @@ module.exports = function(app) {
     Post.edit(req.params.name, req.params.day, req.params.title, function (err, post) {
       if (err) {
         req.flash('error', err); 
-        return res.redirect(back);
+        return res.redirect('back');
       }
       var currentUser = req.session.user,
           reprint_from = {name: post.name, day: post.time.day, title: post.title},
@@ -370,8 +362,7 @@ module.exports = function(app) {
           return res.redirect('back');
         }
         req.flash('success', '转载成功!');
-        var url = '/u/' + post.name + '/' + post.time.day + '/' + post.title;
-        //跳转到转载后的文章页面
+        var url = encodeURI('/u/' + post.name + '/' + post.time.day + '/' + post.title);
         res.redirect(url);
       });
     });
