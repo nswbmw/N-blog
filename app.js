@@ -10,7 +10,7 @@ var MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
 var multer  = require('multer');
 
-var route = require('./routes/index');
+var routes = require('./routes/index');
 var settings = require('./settings');
 
 var fs = require('fs');
@@ -46,7 +46,7 @@ app.use(session({
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
-route(app);
+routes(app);
 
 app.use(function (err, req, res, next) {
   var meta = '[' + new Date() + '] ' + req.url + '\n';

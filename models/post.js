@@ -377,7 +377,7 @@ Post.search = function(keyword, callback) {
         mongodb.close();
         return callback(err);
       }
-      var pattern = new RegExp("^.*" + keyword + ".*$", "i");
+      var pattern = new RegExp(keyword, "i");
       collection.find({
         "title": pattern
       }, {
