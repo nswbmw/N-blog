@@ -140,9 +140,12 @@ Post.getOne = function(name, day, title, callback) {
           });
           //解析 markdown 为 html
           doc.post = markdown.toHTML(doc.post);
-          doc.comments.forEach(function (comment) {
-            comment.content = markdown.toHTML(comment.content);
-          });
+          //添加comments判断，否则没有评论时，forEach会报错
+          if(doc.post.comments && doc.post.comments.length>0){
+                doc.comments.forEach(function (comment) {
+                comment.content = markdown.toHTML(comment.content);
+                });
+            }          
           callback(null, doc);//返回查询的一篇文章
         }
       });
