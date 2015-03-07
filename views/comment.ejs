@@ -1,11 +1,16 @@
 <br />
-<% post.comments.forEach(function (comment, index) { %>
+<%if(post.comments && post.comments.length>0){%>
+<% post.comments.reverse().forEach(function (comment, index) { %>
   <div style="padding-left:4em">
     <p><img src="<%= comment.head %>" class="l_head" /><a href="<%= comment.website %>"><%= comment.name %></a>
     <span class="info"> 回复于 <%= comment.time %></span></p>
     <p><%- comment.content %></p>
   </div>
 <% }) %>
+
+<%}else{%>
+<div class="alert alert-success">暂无留言</div>
+<%}%>
 
 <form method="post">
 <% if (user) { %>
