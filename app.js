@@ -41,7 +41,9 @@ app.use(session({
     db: settings.db,
     host: settings.host,
     port: settings.port
-  })
+  }),
+  resave: true,
+  saveUninitialized: true
 }));
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
