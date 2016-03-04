@@ -15,7 +15,7 @@ N-blog
 4.
 使用系統管理員開啟cmd後`cd到mongo的資料夾裡的bin內`輸入`mongod --dbpath ../blog`
 5.
-cd到clone的資料夾內`node app`
+cd到clone的資料夾內輸入`node app`
 6.
 開啟瀏覽器`localhost:3000`
 
