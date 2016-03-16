@@ -4,6 +4,14 @@ N-blog
 使用 Express + MongoDB 搭建多人博客  
 
 教程见 [wiki](https://github.com/nswbmw/N-blog/wiki/_pages)
+ˊ
+###如何執行
+1. `npm install`
+2. `安裝mongoDB ` https://www.mongodb.org/
+3. `在mongo資料夾內的bin的同層目錄建造一個blog資料夾`
+4. 使用系統管理員開啟cmd後`cd到mongo的資料夾裡的bin內`輸入`mongod --dbpath ../blog`
+5. 開啟另一個cmd`cd到clone的資料夾內輸入``node app`
+6. 開啟瀏覽器`localhost:3000`
 
 
 ### 分支说明

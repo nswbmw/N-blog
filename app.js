@@ -24,7 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.use(logger('dev'));
-app.use(logger({stream: accessLog}));
+app.use(logger("combined",{stream: accessLog}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({
   dest: './public/images',
@@ -41,7 +41,9 @@ app.use(session({
     db: settings.db,
     host: settings.host,
     port: settings.port
-  })
+  }),
+  resave: true,
+  saveUninitialized: true
 }));
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
