@@ -1,5 +1,6 @@
 N-blog
 ======
+[![Known Vulnerabilities](https://snyk.io/test/github/nswbmw/N-blog/badge.svg)](https://snyk.io/test/github/nswbmw/N-blog)
 
 使用 Express + MongoDB 搭建多人博客  
 
