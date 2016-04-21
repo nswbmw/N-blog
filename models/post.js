@@ -328,7 +328,7 @@ Post.getTags = function(callback) {
         if (err) {
           return callback(err);
         }
-        callback(null, docs);
+        callback(null, docs.filter(function(x){ return x.length;}));
       });
     });
   });
