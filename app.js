@@ -40,7 +40,8 @@ app.use(session({
   store: new MongoStore({
     db: settings.db,
     host: settings.host,
-    port: settings.port
+    port: settings.port,
+    url: 'mongodb://localhost/blog'
   })
 }));
 app.use(flash());
