@@ -1,0 +1,78 @@
+/* ---------- 全局样式 ---------- */
+
+body {
+  width: 1100px;
+  height: 100%;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+a:hover {
+  border-bottom: 3px solid #4fc08d;
+}
+
+.button {
+  background-color: #4fc08d !important;
+  color: #fff !important;
+}
+
+.avatar {
+  border-radius: 3px;
+  width: 48px;
+  height: 48px;
+  float: right;
+}
+
+/* ---------- nav ---------- */
+
+.nav {
+  margin-bottom: 20px;
+  color: #999;
+  text-align: center;
+}
+
+.nav h1 {
+  color: #4fc08d;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+/* ---------- nav-setting ---------- */
+
+.nav-setting {
+  position: fixed;
+  right: 30px;
+  top: 35px;
+  z-index: 999;
+}
+
+.nav-setting .ui.dropdown.button {
+  padding: 10px 10px 0 10px;
+  background-color: #fff !important;
+}
+
+.nav-setting .icon.bars {
+  color: #000;
+  font-size: 18px;
+}
+
+/* ---------- post-content ---------- */
+
+.post-content h3 a {
+  color: #4fc08d !important;
+}
+
+.post-content .tag {
+  font-size: 13px;
+  margin-right: 5px;
+  color: #999;
+}
+
+.post-content .tag.right {
+  float: right;
+  margin-right: 0;
+}
+
+.post-content .tag.right a {
+  color: #999;
+}

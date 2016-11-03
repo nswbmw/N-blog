@@ -1,23 +1,33 @@
 {
-  "name": "N-blog",
+  "name": "myblog",
   "version": "1.0.0",
-  "private": true,
-  "description": "N-blog for express4.x",
+  "description": "my first blog",
+  "main": "index.js",
   "scripts": {
-    "start": "node app"
+    "test": "node --harmony ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
+    "start": "NODE_ENV=production pm2 start index.js --node-args='--harmony' --name 'myblog'"
   },
+  "author": "nswbmw",
+  "license": "ISC",
   "dependencies": {
-    "express": "4.10.2",
-    "body-parser": "1.9.0",
-    "cookie-parser": "1.3.3",
-    "morgan": "1.3.1",
-    "serve-favicon": "2.1.5",
-    "ejs": "1.0.0",
-    "markdown": "0.5.0",
-    "mongodb": "1.4.15",
-    "express-session": "1.9.1",
+    "config-lite": "1.5.0",
     "connect-flash": "0.1.1",
-    "connect-mongo": "0.4.1",
-    "multer": "0.1.6"
+    "connect-mongo": "1.3.2",
+    "ejs": "2.5.2",
+    "express": "4.14.0",
+    "express-formidable": "1.0.0",
+    "express-session": "1.14.2",
+    "express-winston": "2.0.0",
+    "marked": "0.3.6",
+    "moment": "2.15.2",
+    "mongolass": "2.3.1",
+    "objectid-to-timestamp": "1.3.0",
+    "sha1": "1.1.1",
+    "winston": "2.2.0"
+  },
+  "devDependencies": {
+    "istanbul": "0.4.5",
+    "mocha": "3.1.2",
+    "supertest": "2.0.1"
   }
 }

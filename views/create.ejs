@@ -11,14 +11,14 @@
   </div>
 
   <div class="eight wide column">
-    <form class="ui form segment" method="post" action="/posts/<%= post._id %>/edit">
+    <form class="ui form segment" method="post" action="/posts">
       <div class="field required">
         <label>标题</label>
-        <input type="text" name="title" value="<%= post.title %>">
+        <input type="text" name="title">
       </div>
       <div class="field required">
         <label>内容</label>
-        <textarea name="content" rows="15"><%= post.content %></textarea>
+        <textarea name="content" rows="15"></textarea>
       </div>
       <input type="submit" class="ui button" value="发布">
     </div>
