@@ -2,7 +2,7 @@
 
 使用 Express + MongoDB 搭建多人博客  
 
-### 目录
+## 目录
 
 - 开发环境搭建
     - [Node.js 的安装与使用](https://github.com/nswbmw/N-blog/blob/master/book/1.1%20Node.js%20%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8.md)
@@ -82,3 +82,11 @@
         - [pm2](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4152-pm2)
         - [部署到 Heroku](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4152-部署到-heroku)
         - [部署到 UCloud](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4153-部署到-ucloud)
+
+## 捐赠
+
+您的捐赠，是我持续开源的动力。
+
+支付宝 | 微信
+------|------
+![](./public/alipay.png) | ![](./public/wechat.jpeg)
