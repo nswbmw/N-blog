@@ -1,4 +1,4 @@
-config
+config/*
 !config/default.*
 logs
 npm-debug.log
