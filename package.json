@@ -8,7 +8,7 @@
     "start": "NODE_ENV=production pm2 start index.js --node-args='--harmony' --name 'myblog'"
   },
   "author": "nswbmw",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "config-lite": "1.5.0",
     "connect-flash": "0.1.1",
