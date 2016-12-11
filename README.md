@@ -89,6 +89,10 @@
         - [部署到 Heroku](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4152-部署到-heroku)
         - [部署到 UCloud](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4153-部署到-ucloud)
 
+## GitBook
+
+[GitBook 在线阅读](https://maninboat.gitbooks.io/n-blog/content/)
+
 ## 捐赠
 
 您的捐赠，是我持续开源的动力。
