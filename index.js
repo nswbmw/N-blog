@@ -4,6 +4,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
 var config = require('config-lite');
+var bodyParser = require('body-parser');
 var routes = require('./routes');
 var pkg = require('./package');
 var winston = require('winston');
@@ -32,10 +33,8 @@ app.use(session({
 // flash 中间价，用来显示通知
 app.use(flash());
 // 处理表单及文件上传的中间件
-app.use(require('express-formidable')({
-  uploadDir: path.join(__dirname, 'public/img'),// 上传文件目录
-  keepExtensions: true// 保留后缀
-}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // 设置模板全局常量
 app.locals.blog = {
