@@ -10,7 +10,7 @@ module.exports = function (app) {
   // 404 page
   app.use(function (req, res) {
     if (!res.headersSent) {
-      res.render('404');
+      res.status(404).render('404');
     }
   });
 };

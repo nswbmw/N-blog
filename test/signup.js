@@ -4,13 +4,15 @@ var request = require('supertest');
 var app = require('../index');
 var User = require('../lib/mongo').User;
 
+var testName1 = 'testName1';
+var testName2 = 'nswbmw';
 describe('signup', function() {
   describe('POST /signup', function() {
     var agent = request.agent(app);//persist cookie when redirect
     beforeEach(function (done) {
       // 创建一个用户
       User.create({
-        name: 'aaa',
+        name: testName1,
         password: '123456',
         avatar: '',
         gender: 'x',
@@ -24,8 +26,8 @@ describe('signup', function() {
     });
 
     afterEach(function (done) {
-      // 清空 users 表
-      User.remove({})
+      // 删除测试用户
+      User.remove({ name: { $in: [testName1, testName2] } })
         .exec()
         .then(function () {
           done();
@@ -54,7 +56,7 @@ describe('signup', function() {
         .post('/signup')
         .type('form')
         .attach('avatar', path.join(__dirname, 'avatar.png'))
-        .field({ name: 'nswbmw', gender: 'a' })
+        .field({ name: testName2, gender: 'a' })
         .redirects()
         .end(function(err, res) {
           if (err) return done(err);
@@ -69,7 +71,7 @@ describe('signup', function() {
         .post('/signup')
         .type('form')
         .attach('avatar', path.join(__dirname, 'avatar.png'))
-        .field({ name: 'aaa', gender: 'm', bio: 'noder', password: '123456', repassword: '123456' })
+        .field({ name: testName1, gender: 'm', bio: 'noder', password: '123456', repassword: '123456' })
         .redirects()
         .end(function(err, res) {
           if (err) return done(err);
@@ -84,7 +86,7 @@ describe('signup', function() {
         .post('/signup')
         .type('form')
         .attach('avatar', path.join(__dirname, 'avatar.png'))
-        .field({ name: 'nswbmw', gender: 'm', bio: 'noder', password: '123456', repassword: '123456' })
+        .field({ name: testName2, gender: 'm', bio: 'noder', password: '123456', repassword: '123456' })
         .redirects()
         .end(function(err, res) {
           if (err) return done(err);
