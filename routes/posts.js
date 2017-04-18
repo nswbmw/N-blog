@@ -27,8 +27,8 @@ router.get('/create', checkLogin, function(req, res, next) {
 // POST /posts 发表一篇文章
 router.post('/', checkLogin, function(req, res, next) {
   var author = req.session.user._id;
-  var title = req.fields.title;
-  var content = req.fields.content;
+  var title = req.body.title;
+  var content = req.body.content;
 
   // 校验参数
   try {
@@ -64,7 +64,7 @@ router.post('/', checkLogin, function(req, res, next) {
 // GET /posts/:postId 单独一篇的文章页
 router.get('/:postId', function(req, res, next) {
   var postId = req.params.postId;
-  
+
   Promise.all([
     PostModel.getPostById(postId),// 获取文章信息
     CommentModel.getComments(postId),// 获取该文章所有留言
@@ -109,8 +109,8 @@ router.get('/:postId/edit', checkLogin, function(req, res, next) {
 router.post('/:postId/edit', checkLogin, function(req, res, next) {
   var postId = req.params.postId;
   var author = req.session.user._id;
-  var title = req.fields.title;
-  var content = req.fields.content;
+  var title = req.body.title;
+  var content = req.body.content;
 
   PostModel.updatePostById(postId, author, { title: title, content: content })
     .then(function () {
@@ -139,7 +139,7 @@ router.get('/:postId/remove', checkLogin, function(req, res, next) {
 router.post('/:postId/comment', checkLogin, function(req, res, next) {
   var author = req.session.user._id;
   var postId = req.params.postId;
-  var content = req.fields.content;
+  var content = req.body.content;
   var comment = {
     author: author,
     postId: postId,
