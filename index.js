@@ -33,11 +33,7 @@ app.use(session({
 }));
 // flash 中间件，用来显示通知
 app.use(flash());
-// 处理表单及文件上传的中间件
-app.use(require('express-formidable')({
-  uploadDir: path.join(__dirname, 'public/img'),// 上传文件目录
-  keepExtensions: true// 保留后缀
-}));
+
 
 // 设置模板全局常量
 app.locals.blog = {
@@ -53,6 +49,15 @@ app.use(function (req, res, next) {
   next();
 });
 
+// 路由
+routes(app);
+
+// 处理表单及文件上传的中间件
+app.use(require('express-formidable')({
+  uploadDir: path.join(__dirname, 'public/img'),// 上传文件目录
+  keepExtensions: true// 保留后缀
+}));
+
 // 正常请求的日志
 app.use(expressWinston.logger({
   transports: [
@@ -65,8 +70,7 @@ app.use(expressWinston.logger({
     })
   ]
 }));
-// 路由
-routes(app);
+
 // 错误请求的日志
 app.use(expressWinston.errorLogger({
   transports: [
