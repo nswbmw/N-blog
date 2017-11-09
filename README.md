@@ -4,9 +4,9 @@
 
 ## 开发环境
 
-- Node.js: `6.9.1`
-- MongoDB: `3.2.10`
-- Express: `4.14.0`
+- Node.js: `8.9.1`
+- MongoDB: `3.4.10`
+- Express: `4.16.2`
 
 ## 目录
 
@@ -46,6 +46,8 @@
     - [准备工作](https://github.com/nswbmw/N-blog/blob/master/book/4.2%20%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md)
         - [目录结构](https://github.com/nswbmw/N-blog/blob/master/book/4.2%20%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md#421-目录结构)
         - [安装依赖模块](https://github.com/nswbmw/N-blog/blob/master/book/4.2%20%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md#422-安装依赖模块)
+        - [ESLint](https://github.com/nswbmw/N-blog/blob/master/book/4.2%20%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md#423-eslint)
+        - [EditorConfig](https://github.com/nswbmw/N-blog/blob/master/book/4.2%20%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md#424-editorconfig)
     - [配置文件](https://github.com/nswbmw/N-blog/blob/master/book/4.3%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.md)
         - [config-lite](https://github.com/nswbmw/N-blog/blob/master/book/4.3%20%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.md#431-config-lite)
     - [功能设计](https://github.com/nswbmw/N-blog/blob/master/book/4.4%20%E5%8A%9F%E8%83%BD%E8%AE%BE%E8%AE%A1.md)
@@ -88,10 +90,9 @@
         - [pm2](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4152-pm2)
         - [部署到 Heroku](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4152-部署到-heroku)
         - [部署到 UCloud](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4153-部署到-ucloud)
-
-## GitBook
-
-[GitBook 在线阅读](https://maninboat.gitbooks.io/n-blog/content/)
+    - 课后作业
+        - 添加分页功能
+        - 添加二级评论功能
 
 ## 捐赠
 
