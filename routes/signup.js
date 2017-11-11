@@ -53,11 +53,11 @@ router.post('/', checkNotLogin, function (req, res, next) {
 
   // 待写入数据库的用户信息
   let user = {
-    name,
-    password,
-    gender,
-    bio,
-    avatar
+    name: name,
+    password: password,
+    gender: gender,
+    bio: bio,
+    avatar: avatar
   }
   // 用户信息写入数据库
   UserModel.create(user)

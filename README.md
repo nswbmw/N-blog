@@ -90,9 +90,10 @@
         - [pm2](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4152-pm2)
         - [部署到 Heroku](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4152-部署到-heroku)
         - [部署到 UCloud](https://github.com/nswbmw/N-blog/blob/master/book/4.15%20%E9%83%A8%E7%BD%B2.md#4153-部署到-ucloud)
-    - 课后作业
+    - 扩展训练
         - 添加分页功能
         - 添加二级评论功能
+        - 添加标签(tag)功能
 
 ## 捐赠
 

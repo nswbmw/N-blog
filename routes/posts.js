@@ -19,8 +19,8 @@ router.get('/', function (req, res, next) {
     .catch(next)
 })
 
-// POST /posts 发表一篇文章
-router.post('/', checkLogin, function (req, res, next) {
+// POST /posts/create 发表一篇文章
+router.post('/create', checkLogin, function (req, res, next) {
   const author = req.session.user._id
   const title = req.fields.title
   const content = req.fields.content
@@ -112,13 +112,22 @@ router.post('/:postId/edit', checkLogin, function (req, res, next) {
   const title = req.fields.title
   const content = req.fields.content
 
-  PostModel.updatePostById(postId, author, { title: title, content: content })
-    .then(function () {
-      req.flash('success', '编辑文章成功')
-      // 编辑成功后跳转到上一页
-      res.redirect(`/posts/${postId}`)
+  PostModel.getRawPostById(postId)
+    .then(function (post) {
+      if (!post) {
+        throw new Error('文章不存在')
+      }
+      if (post.author._id.toString() !== author.toString()) {
+        throw new Error('没有权限')
+      }
+      PostModel.updatePostById(postId, { title: title, content: content })
+        .then(function () {
+          req.flash('success', '编辑文章成功')
+          // 编辑成功后跳转到上一页
+          res.redirect(`/posts/${postId}`)
+        })
+        .catch(next)
     })
-    .catch(next)
 })
 
 // GET /posts/:postId/remove 删除一篇文章
@@ -126,13 +135,22 @@ router.get('/:postId/remove', checkLogin, function (req, res, next) {
   const postId = req.params.postId
   const author = req.session.user._id
 
-  PostModel.delPostById(postId, author)
-    .then(function () {
-      req.flash('success', '删除文章成功')
-      // 删除成功后跳转到主页
-      res.redirect('/posts')
+  PostModel.getRawPostById(postId)
+    .then(function (post) {
+      if (!post) {
+        throw new Error('文章不存在')
+      }
+      if (post.author._id.toString() !== author.toString()) {
+        throw new Error('没有权限')
+      }
+      PostModel.delPostById(postId)
+        .then(function () {
+          req.flash('success', '删除文章成功')
+          // 删除成功后跳转到主页
+          res.redirect('/posts')
+        })
+        .catch(next)
     })
-    .catch(next)
 })
 
 // POST /posts/:postId/comment 创建一条留言
