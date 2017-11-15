@@ -87,12 +87,12 @@ module.exports = {
       .exec()
   },
 
-  // 通过用户 id 和文章 id 更新一篇文章
+  // 通过文章 id 更新一篇文章
   updatePostById: function updatePostById (postId, data) {
     return Post.update({ _id: postId }, { $set: data }).exec()
   },
 
-  // 通过用户 id 和文章 id 删除一篇文章
+  // 通过文章 id 删除一篇文章
   delPostById: function delPostById (postId) {
     return Post.remove({ _id: postId })
       .exec()
