@@ -112,6 +112,19 @@ router.post('/:postId/edit', checkLogin, function (req, res, next) {
   const title = req.fields.title
   const content = req.fields.content
 
+  // 校验参数
+  try {
+    if (!title.length) {
+      throw new Error('请填写标题')
+    }
+    if (!content.length) {
+      throw new Error('请填写内容')
+    }
+  } catch (e) {
+    req.flash('error', e.message)
+    return res.redirect('back')
+  }
+
   PostModel.getRawPostById(postId)
     .then(function (post) {
       if (!post) {
@@ -120,6 +133,7 @@ router.post('/:postId/edit', checkLogin, function (req, res, next) {
       if (post.author._id.toString() !== author.toString()) {
         throw new Error('没有权限')
       }
+
       PostModel.updatePostById(postId, { title: title, content: content })
         .then(function () {
           req.flash('success', '编辑文章成功')
@@ -158,6 +172,17 @@ router.post('/:postId/comment', checkLogin, function (req, res, next) {
   const author = req.session.user._id
   const postId = req.params.postId
   const content = req.fields.content
+
+  // 校验参数
+  try {
+    if (!content.length) {
+      throw new Error('请填写留言内容')
+    }
+  } catch (e) {
+    req.flash('error', e.message)
+    return res.redirect('back')
+  }
+
   const comment = {
     author: author,
     postId: postId,
