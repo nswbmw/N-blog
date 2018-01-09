@@ -35,6 +35,10 @@ describe('signup', function () {
         .catch(done)
     })
 
+    after(function (done) {
+      process.exit()
+    })
+
     // 用户名错误的情况
     it('wrong name', function (done) {
       agent
