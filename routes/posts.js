@@ -41,8 +41,7 @@ router.post('/create', checkLogin, function (req, res, next) {
   let post = {
     author: author,
     title: title,
-    content: content,
-    pv: 0
+    content: content
   }
 
   PostModel.create(post)
