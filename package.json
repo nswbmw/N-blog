@@ -20,7 +20,7 @@
     "express-winston": "2.4.0",
     "marked": "0.3.12",
     "moment": "2.20.1",
-    "mongolass": "4.1.0",
+    "mongolass": "~4.1.1",
     "objectid-to-timestamp": "1.3.0",
     "sha1": "1.1.1",
     "winston": "2.4.0"

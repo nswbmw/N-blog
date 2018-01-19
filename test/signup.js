@@ -27,7 +27,7 @@ describe('signup', function () {
 
     afterEach(function (done) {
       // 删除测试用户
-      User.remove({ name: { $in: [testName1, testName2] } })
+      User.deleteMany({ name: { $in: [testName1, testName2] } })
         .exec()
         .then(function () {
           done()
