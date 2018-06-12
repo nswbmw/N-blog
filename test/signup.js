@@ -44,8 +44,8 @@ describe('signup', function () {
       agent
         .post('/signup')
         .type('form')
-        .attach('avatar', path.join(__dirname, 'avatar.png'))
         .field({ name: '' })
+        .attach('avatar', path.join(__dirname, 'avatar.png'))
         .redirects()
         .end(function (err, res) {
           if (err) return done(err)
@@ -59,8 +59,8 @@ describe('signup', function () {
       agent
         .post('/signup')
         .type('form')
-        .attach('avatar', path.join(__dirname, 'avatar.png'))
         .field({ name: testName2, gender: 'a' })
+        .attach('avatar', path.join(__dirname, 'avatar.png'))
         .redirects()
         .end(function (err, res) {
           if (err) return done(err)
@@ -74,8 +74,8 @@ describe('signup', function () {
       agent
         .post('/signup')
         .type('form')
-        .attach('avatar', path.join(__dirname, 'avatar.png'))
         .field({ name: testName1, gender: 'm', bio: 'noder', password: '123456', repassword: '123456' })
+        .attach('avatar', path.join(__dirname, 'avatar.png'))
         .redirects()
         .end(function (err, res) {
           if (err) return done(err)
@@ -89,8 +89,8 @@ describe('signup', function () {
       agent
         .post('/signup')
         .type('form')
-        .attach('avatar', path.join(__dirname, 'avatar.png'))
         .field({ name: testName2, gender: 'm', bio: 'noder', password: '123456', repassword: '123456' })
+        .attach('avatar', path.join(__dirname, 'avatar.png'))
         .redirects()
         .end(function (err, res) {
           if (err) return done(err)
