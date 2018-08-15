@@ -15,7 +15,7 @@
     "connect-mongo": "2.0.1",
     "ejs": "2.5.7",
     "express": "4.16.2",
-    "express-formidable": "1.0.0",
+    "express-formidable": "git+https://github.com/utatti/express-formidable.git",
     "express-session": "1.15.6",
     "express-winston": "2.4.0",
     "marked": "0.3.12",
