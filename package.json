@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover _mocha",
-    "start": "cross-env NODE_ENV=production pm2 start index.js --name 'myblog'"
+    "start": "cross-env NODE_ENV=production pm2 start index.js --name 'myblog'",
+    "stop": "cross-env NODE_ENV=production pm2 stop myblog",
+    "lint": "eslint --fix config lib middlewares models routes test"
   },
   "author": "nswbmw",
   "license": "MIT",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "cross-env": "5.2.0",
+    "eslint": "5.5.0",
     "eslint-config-standard": "11.0.0-beta.0",
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-node": "5.2.1",
@@ -34,6 +37,7 @@
     "eslint-plugin-standard": "3.0.1",
     "istanbul": "0.4.5",
     "mocha": "4.1.0",
+    "pm2": "3.0.0",
     "supertest": "3.0.0"
   }
 }
