@@ -1,7 +1,7 @@
 {
-  "name": "myblog",
+  "name": "WOW_经典回归",
   "version": "1.0.0",
-  "description": "my first blog",
+  "description": "Enjoy WOW Enjoy Life",
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover _mocha",
@@ -9,7 +9,7 @@
     "stop": "cross-env NODE_ENV=production pm2 stop myblog",
     "lint": "eslint --fix config lib middlewares models routes test"
   },
-  "author": "nswbmw",
+  "author": "Huan Ma | Marty",
   "license": "MIT",
   "dependencies": {
     "config-lite": "2.1.0",
