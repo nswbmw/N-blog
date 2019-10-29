@@ -20,7 +20,7 @@
     "express-formidable": "git+https://github.com/utatti/express-formidable.git",
     "express-session": "1.15.6",
     "express-winston": "2.4.0",
-    "marked": "0.3.12",
+    "marked": "0.7.0",
     "moment": "2.20.1",
     "mongolass": "~4.1.1",
     "objectid-to-timestamp": "1.3.0",
